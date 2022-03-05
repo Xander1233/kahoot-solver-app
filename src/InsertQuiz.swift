@@ -4,6 +4,9 @@ struct InsertQuiz: View {
     
     public var id: Binding<String>
     public var quiz: Binding<Quiz?>
+    @State private var showingScanner = false
+    
+    
     
     var body: some View {
         VStack {
@@ -19,7 +22,20 @@ struct InsertQuiz: View {
                 } footer: {
                     Text("The Quiz ID can be found in the URL from the host game.\nIt usually looks something like this: 2eb74179-19e7-44f0-9071-816f97783080")
                 }
+                
+                Button {
+                    showingScanner = true
+                } label: {
+                    HStack {
+                        Image(systemName: "camera.fill")
+                        Text("Use camera to find the ID")
+                    }
+                }
             }
+            .frame(minHeight: 10)
+        }
+        .sheet(isPresented: $showingScanner) {
+            ScanDocumentView(recognizedText: self.id)
         }
     }
 }
